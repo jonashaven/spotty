@@ -29,8 +29,12 @@ func main() {
 		runLogin()
 	case "now":
 		runNow(short, refresh)
+	case "update":
+		runUpdate()
+	case "version":
+		fmt.Println(version)
 	default:
-		fmt.Fprintf(os.Stderr, "Usage: spotty [login|now] [--short]\n")
+		fmt.Fprintf(os.Stderr, "Usage: spotty [login|now|update|version] [--short]\n")
 		os.Exit(1)
 	}
 }

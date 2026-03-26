@@ -38,7 +38,7 @@ jobs:
         run: |
           ext=""
           if [ "$GOOS" = "windows" ]; then ext=".exe"; fi
-          go build -o spotty-${GOOS}-${GOARCH}${ext} .
+          go build -ldflags "-s -w -X main.version=${GITHUB_REF_NAME}" -o spotty-${GOOS}-${GOARCH}${ext} .
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
