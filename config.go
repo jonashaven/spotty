@@ -17,7 +17,7 @@ type Config struct {
 
 func configDir() string {
 	home, _ := os.UserHomeDir()
-	return filepath.Join(home, ".config", "spotify-cli")
+	return filepath.Join(home, ".config", "spotty")
 }
 
 func configPath() string {
