@@ -29,12 +29,15 @@ func main() {
 		runLogin()
 	case "now":
 		runNow(short, refresh)
+	case "play", "pause", "next", "prev":
+		cfg := requireAuth()
+		runControl(cfg, cmd)
 	case "update":
 		runUpdate()
 	case "version":
 		fmt.Println(version)
 	default:
-		fmt.Fprintf(os.Stderr, "Usage: spotty [login|now|update|version] [--short]\n")
+		fmt.Fprintf(os.Stderr, "Usage: spotty [now|play|pause|next|prev|login|update|version]\n")
 		os.Exit(1)
 	}
 }
@@ -107,6 +110,21 @@ func runNow(short bool, refresh bool) {
 	if err != nil && !short {
 		fatal(err)
 	}
+}
+
+func requireAuth() *Config {
+	cfg, err := LoadConfig()
+	if err != nil || cfg.AccessToken == "" {
+		fmt.Fprintln(os.Stderr, "Not logged in. Run: spotty login")
+		os.Exit(1)
+	}
+	if time.Now().After(cfg.Expiry) {
+		if err := RefreshAccessToken(cfg); err != nil {
+			fmt.Fprintln(os.Stderr, "Token refresh failed. Run: spotty login")
+			os.Exit(1)
+		}
+	}
+	return cfg
 }
 
 func fatal(err error) {

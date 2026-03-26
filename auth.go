@@ -18,7 +18,7 @@ const (
 	authURL  = "https://accounts.spotify.com/authorize"
 	tokenURL = "https://accounts.spotify.com/api/token"
 	redirect = "http://127.0.0.1:8888/callback"
-	scopes   = "user-read-currently-playing"
+	scopes   = "user-read-currently-playing user-modify-playback-state"
 )
 
 type tokenResponse struct {
