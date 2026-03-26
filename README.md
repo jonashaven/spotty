@@ -2,6 +2,12 @@
 
 Spotify CLI for your terminal & tmux. Shows what's playing, controls playback.
 
+## AI Agent Skill
+
+```bash
+npx skills add jonashaven/spotty
+```
+
 ## Install
 
 ```bash
