@@ -8,9 +8,6 @@ import (
 	"strings"
 	"time"
 )
-
-const maxTicker = 20
-
 const playerURL = "https://api.spotify.com/v1/me/player/currently-playing"
 
 type nowPlayingResponse struct {
