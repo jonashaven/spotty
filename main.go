@@ -69,10 +69,13 @@ func runLogin() {
 }
 
 func runNow(short bool, refresh bool) {
-	// In short mode, use cache to avoid hitting API too often
-	if short && !refresh {
+	if !refresh {
 		if cache, err := LoadCache(); err == nil && time.Since(cache.FetchedAt) < 30*time.Second {
-			printShort(cache.Text, cache.IsPlaying)
+			if short {
+				printShort(cache.Text, cache.IsPlaying)
+			} else {
+				printFull(cache)
+			}
 			return
 		}
 	}

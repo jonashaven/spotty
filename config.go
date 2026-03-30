@@ -30,6 +30,8 @@ func cachePath() string {
 
 type Cache struct {
 	Text      string    `json:"text"`
+	Artists   string    `json:"artists"`
+	Album     string    `json:"album"`
 	IsPlaying bool      `json:"is_playing"`
 	FetchedAt time.Time `json:"fetched_at"`
 }

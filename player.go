@@ -37,11 +37,10 @@ func GetNowPlaying(accessToken string, short bool) error {
 	defer resp.Body.Close()
 
 	if resp.StatusCode == 204 || resp.StatusCode == 202 {
-		if short {
-			SaveCache(&Cache{})
-			return nil
+		SaveCache(&Cache{})
+		if !short {
+			fmt.Println("Nothing playing right now.")
 		}
-		fmt.Println("Nothing playing right now.")
 		return nil
 	}
 
@@ -81,14 +80,34 @@ func GetNowPlaying(accessToken string, short bool) error {
 
 	text := fmt.Sprintf("%s — %s", np.Item.Name, strings.Join(artists, ", "))
 
+	SaveCache(&Cache{
+		Text:      np.Item.Name,
+		Artists:   strings.Join(artists, ", "),
+		Album:     np.Item.Album.Name,
+		IsPlaying: np.IsPlaying,
+		FetchedAt: time.Now(),
+	})
+
 	if short {
-		SaveCache(&Cache{Text: np.Item.Name, IsPlaying: np.IsPlaying, FetchedAt: time.Now()})
 		printShort(np.Item.Name, np.IsPlaying)
 	} else {
 		fmt.Printf("%s %s\n", status, text)
 		fmt.Printf("  %s\n", np.Item.Album.Name)
 	}
 	return nil
+}
+
+func printFull(c *Cache) {
+	if c.Text == "" {
+		fmt.Println("Nothing playing right now.")
+		return
+	}
+	status := "▶"
+	if !c.IsPlaying {
+		status = "⏸"
+	}
+	fmt.Printf("%s %s — %s\n", status, c.Text, c.Artists)
+	fmt.Printf("  %s\n", c.Album)
 }
 
 func printShort(text string, isPlaying bool) {
