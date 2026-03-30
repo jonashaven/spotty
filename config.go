@@ -48,8 +48,13 @@ func LoadCache() (*Cache, error) {
 
 func SaveCache(c *Cache) error {
 	p := cachePath()
-	os.MkdirAll(filepath.Dir(p), 0700)
-	data, _ := json.Marshal(c)
+	if err := os.MkdirAll(filepath.Dir(p), 0700); err != nil {
+		return err
+	}
+	data, err := json.Marshal(c)
+	if err != nil {
+		return err
+	}
 	return os.WriteFile(p, data, 0600)
 }
 
